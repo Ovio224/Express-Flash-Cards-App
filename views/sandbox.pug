@@ -1,0 +1,16 @@
+extends layout.pug
+
+block content
+  table
+    tr
+      th
+        h3 First Name
+      th
+        h3 Last Name
+    tr
+      td
+        each val in firstName
+          p= val
+      td
+        each val in lastName
+          p= val
