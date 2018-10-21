@@ -9,44 +9,25 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
-// const firstName = ["Will","Leo","James","Paula","Larry"];
-// const lastName = ["Smith","Di Caprio","Franco","Patton","David"];
 
 app.set('view engine', 'pug');
 
-app.get('/', (req, res) => {
-    const name = req.cookies.username;
-    if (name) {
-        res.render('index', {name});
-    } else {
-        res.redirect('/hello');
-    }
+const mainRoutes = require('./routes');
+const cardRoutes = require('./routes/cards');
+
+app.use(mainRoutes);
+app.use('/cards', cardRoutes);
+
+app.use((req, res, next) => {
+    const err = new Error('Not found');
+    err.status = 404;
+    next(err);
 });
 
-app.get('/cards', (req, res) => {
-    res.render('card', {
-        prompt: "Who is the man in 'I am Legend'?",
-        hint: "Starts with Will and ends with Smith!",
-    });
-});
-
-app.get('/hello', (req, res) => {
-    const name = req.cookies.username;
-    if(name) {
-        res.redirect('/');
-    } else {
-        res.render('hello');
-    }
-});
-
-app.post('/hello', (req, res) => {
-    res.cookie('username', req.body.username);
-    res.redirect('/');
-});
-
-app.post('/goodbye', (req, res) => {
-    res.clearCookie('username', req.cookies.username);
-    res.redirect('/hello');
+app.use((err, req, res, next) => {
+    res.locals.err = err;
+    res.status(err.status)
+    res.render('error');
 });
 
 
