@@ -9,7 +9,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
-
 app.set('view engine', 'pug');
 
 const mainRoutes = require('./routes');
@@ -17,6 +16,7 @@ const cardRoutes = require('./routes/cards');
 
 app.use(mainRoutes);
 app.use('/cards', cardRoutes);
+app.use('/static', express.static('public'));
 
 app.use((req, res, next) => {
     const err = new Error('Not found');
@@ -30,10 +30,6 @@ app.use((err, req, res, next) => {
     res.render('error');
 });
 
-
-// app.get('/sandbox', (req, res) => {
-//     res.render('sandbox', {firstName, lastName})
-// });
 
 app.listen(3000, () => {
     console.log('The app is running on localhost:3000');
