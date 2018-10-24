@@ -8,8 +8,9 @@ block card
       #content
         h2= text
         if hint
-          p.hint
-            i= hint
+          button.hintshow Show hint
+          p(class="hint", style="display: none")
+              i=hint
       .card-flip-wrap
         a(href=`${id}?side=${side}`)
           img.card-flip(src='/static/img/flip.svg')
